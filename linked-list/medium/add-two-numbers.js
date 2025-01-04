@@ -89,6 +89,38 @@ const addTwoNumbers = function (l1, l2) {
   return result;
 };
 
+function addTwoNumbers2(l1, l2) {
+  const result = new ListNode();
+  let sumList = result,
+    carry = 0;
+
+  while (l1 || l2) {
+    let sum = 0;
+
+    if (l1) {
+      sum += l1.val;
+      l1 = l1.next;
+    }
+
+    if (l2) {
+      sum += l2.val;
+      l2 = l2.next;
+    }
+
+    sum = sum + carry;
+    carry = Math.floor(sum / 10);
+
+    sumList.next = new ListNode(sum % 10);
+    sumList = sumList.next;
+
+    if (carry != 0) {
+      sumList.next = new ListNode(carry);
+    }
+  }
+
+  return result.next;
+}
+
 const print = function (list) {
   let r = "";
   while (list) {
@@ -132,6 +164,9 @@ for (let testcase of testcases) {
   print(testcase[0]);
   print(testcase[1]);
   const output = addTwoNumbers(...testcase);
+  const output2 = addTwoNumbers2(...testcase);
   console.log("\noutput:");
   print(output);
+  console.log("\noutput 2:");
+  print(output2);
 }
