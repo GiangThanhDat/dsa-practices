@@ -46,15 +46,65 @@ class ListNode {
 }
 
 const addTwoNumbers = function (l1, l2) {
-  console.log({ l1, l2 });
+  const result = new ListNode(0);
+
+  let p1 = l1,
+    p2 = l2,
+    r = result;
+
+  while (p1 !== null && p2 !== null) {
+    const val = p1.val + p2.val + r.val;
+    const mem = Math.floor(val / 10);
+    r.val = val % 10;
+    if (p1.next || p2.next || mem !== 0) {
+      r.next = new ListNode(mem);
+      r = r.next;
+    }
+    p1 = p1.next;
+    p2 = p2.next;
+  }
+
+  while (p1 !== null) {
+    const val = p1.val + r.val;
+    const mem = Math.floor(val / 10);
+    r.val = val % 10;
+    if (p1.next || mem !== 0) {
+      r.next = new ListNode(mem);
+      r = r.next;
+    }
+    p1 = p1.next;
+  }
+
+  while (p2 !== null) {
+    const val = p2.val + r.val;
+    const mem = Math.floor(val / 10);
+    r.val = val % 10;
+    if (p2.next || mem !== 0) {
+      r.next = new ListNode(mem);
+      r = r.next;
+    }
+    p2 = p2.next;
+  }
+
+  return result;
+};
+
+const print = function (list) {
+  let r = "";
+  while (list) {
+    r += list.val;
+    list = list.next;
+  }
+  console.log(r);
 };
 
 const testcases = [
   [
     new ListNode(2, new ListNode(4, new ListNode(3))),
     new ListNode(5, new ListNode(6, new ListNode(4))),
+    [7, 0, 8],
   ],
-  [new ListNode(0), new ListNode(0)],
+  [new ListNode(0), new ListNode(0), [0]],
   [
     new ListNode(
       9,
@@ -67,11 +117,21 @@ const testcases = [
       ),
     ),
     new ListNode(9, new ListNode(9, new ListNode(9, new ListNode(9)))),
+    [8, 9, 9, 9, 0, 0, 0, 1],
   ],
+  [
+    new ListNode(2, new ListNode(4, new ListNode(9))),
+    new ListNode(5, new ListNode(6, new ListNode(4, new ListNode(9)))),
+    [7, 0, 4, 0, 1],
+  ],
+  [new ListNode(0), new ListNode(7, new ListNode(3)), [7, 3]],
 ];
 
 for (let testcase of testcases) {
-  console.log("input :", testcase);
+  console.log("\n\n\ninput :");
+  print(testcase[0]);
+  print(testcase[1]);
   const output = addTwoNumbers(...testcase);
-  console.log("output :", output);
+  console.log("\noutput:");
+  print(output);
 }
