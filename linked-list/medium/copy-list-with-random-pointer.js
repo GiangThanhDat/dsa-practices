@@ -27,31 +27,89 @@ class _Node {
   }
 }
 
+// My solution
+function copyRandomList(head) {
+  const randomNodesMap = new Map();
+  const copyHead = new _Node();
+
+  let p = head,
+    c = copyHead;
+
+  while (p !== null) {
+    c.next = new _Node(p.val);
+    randomNodesMap.set(p, c.next);
+    p = p.next;
+    c = c.next;
+  }
+
+  p = head;
+  c = copyHead.next;
+
+  while (p !== null) {
+    if (p.random) {
+      c.random = randomNodesMap.get(p.random);
+    }
+    p = p.next;
+    c = c.next;
+  }
+
+  return copyHead.next;
+}
+
+// only one while loop solution
 function copyRandomList(head) {
   const map = new Map();
-  const random = new Map();
-  const result = new _Node(head.val);
+  const copyHead = new _Node();
 
-  map.set(0, result);
+  let p = head,
+    c = copyHead;
 
-  let count = 0;
+  while (p !== null) {
+    let copy;
 
-  for (let p = head.next; p != null; p = p.next, count++) {
-    const node = new _Node(p.val);
-    map.set(count, node);
-    random.set(count, p.random?.val);
+    if (map.has(p)) {
+      copy = map.get(p);
+    } else {
+      copy = new _Node(p.val);
+      map.set(p, copy);
+    }
+
+    if (p.random) {
+      let random;
+      if (map.has(p.random)) {
+        random = map.get(p.random);
+      } else {
+        random = new _Node(p.random.val);
+        map.set(p.random, random);
+      }
+      copy.random = random;
+    }
+
+    c.next = copy;
+    c = c.next;
+    p = p.next;
   }
 
-  let r = result;
-  for (let i = 0; i < count; i++) {
-    r.next = map.get(i);
-    r.random = map.get(random.get(i));
-    r = r.next;
+  return copyHead.next;
+}
+// solution with more concise
+function copyRandomList(head) {
+  const map = new Map([[null, null]]);
+
+  let curr = head;
+
+  while (curr) {
+    if (!map.has(curr)) map.set(curr, new _Node());
+    if (!map.has(curr.next)) map.set(curr.next, new _Node());
+    if (!map.has(curr.random)) map.set(curr.random, new _Node());
+
+    map.get(curr).val = curr.val;
+    map.get(curr).next = map.get(curr.next);
+    map.get(curr).random = map.get(curr.random);
+
+    curr = curr.next;
   }
-
-  console.dir(result, { depth: null });
-
-  return result;
+  return map.get(head);
 }
 
 function print(head) {
