@@ -1,4 +1,4 @@
-console.log("Reverse linked list I");
+console.log("Reverse linked list II");
 
 /*
  * Given the head of a singly linked list and two integers left and right where left <= right,
