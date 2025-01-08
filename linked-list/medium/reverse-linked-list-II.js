@@ -95,6 +95,35 @@ const reverseBetweenUsingQueue = function (head, left, right) {
 
   return left == 1 ? curr : head;
 };
+
+function reverseBetweenUsingPointPrev(head, left, right) {
+  if (left === right) return head;
+  const dummy = new ListNode(0, head);
+  let prev = dummy,
+    i = 1;
+
+  while (i < left) {
+    prev = prev.next;
+    i++;
+  }
+
+  let curr = prev.next;
+  let next = curr.next;
+
+  while (i < right) {
+    const temp = next.next;
+    next.next = curr;
+    curr = next;
+    next = temp;
+    i++;
+  }
+
+  prev.next.next = next;
+  prev.next = curr;
+
+  return dummy.next;
+}
+
 // [list, l, r]
 const testcases = [
   [
@@ -125,7 +154,6 @@ const testcases = [
 function print(head) {
   let out = "";
   while (head) {
-    console.log("loop");
     out += head.val;
     head = head.next;
   }
@@ -134,13 +162,14 @@ function print(head) {
 
 for (const testcase of testcases) {
   const [list, left, right] = testcase;
-  console.log("Input:");
+  console.log("\n\n======\n\nInput:");
   print(list);
   const output = reverseBetween(list, left, right);
-  console.log("list:", list);
   print(output);
   console.log("output stack solution: ");
   const outputStackSolution = reverseBetweenUsingQueue(list, left, right);
-  console.dir(outputStackSolution, { depth: null });
   print(outputStackSolution);
+  console.log("output point prev node:");
+  const outputPointPrevNode = reverseBetweenUsingPointPrev(list, left, right);
+  print(outputPointPrevNode);
 }
