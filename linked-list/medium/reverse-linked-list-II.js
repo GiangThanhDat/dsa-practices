@@ -22,7 +22,6 @@ console.log("Reverse linked list II");
  *     }
  * }
  */
-
 class ListNode {
   constructor(val, next) {
     this.val = val === undefined ? 0 : val;
@@ -162,14 +161,17 @@ function print(head) {
 
 for (const testcase of testcases) {
   const [list, left, right] = testcase;
-  console.log("\n\n======\n\nInput:");
+  console.log("\n======\nInput:");
   print(list);
+
+  console.log("my solution with map: ");
   const output = reverseBetween(list, left, right);
   print(output);
+
   console.log("output stack solution: ");
   const outputStackSolution = reverseBetweenUsingQueue(list, left, right);
   print(outputStackSolution);
-  console.log("output point prev node:");
-  const outputPointPrevNode = reverseBetweenUsingPointPrev(list, left, right);
-  print(outputPointPrevNode);
+  console.log("output previous solution: ");
+  const outPreviousPointer = reverseBetweenUsingPointPrev(list, left, right);
+  print(outPreviousPointer);
 }

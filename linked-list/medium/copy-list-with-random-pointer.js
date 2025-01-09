@@ -92,6 +92,7 @@ function copyRandomList(head) {
 
   return copyHead.next;
 }
+
 // solution with more concise
 function copyRandomList(head) {
   const map = new Map([[null, null]]);
