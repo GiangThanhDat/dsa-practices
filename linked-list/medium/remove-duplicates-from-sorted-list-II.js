@@ -50,6 +50,30 @@ function deleteDuplicates(head) {
   return dummy.next;
 }
 
+function deleteDuplicates2(head) {
+  const res = new ListNode();
+
+  let curr = res;
+  let node = head;
+  let duplicate = null;
+
+  while (node) {
+    if (node.val === node.next?.val) {
+      duplicate = node.val;
+    }
+
+    if (duplicate !== node.val) {
+      curr.next = node;
+      curr = curr.next;
+    }
+
+    node = node.next;
+  }
+
+  curr.next = null;
+  return res.next;
+}
+
 const testcases = [
   new ListNode(
     1,
@@ -76,6 +100,16 @@ const testcases = [
     ),
   ),
   new ListNode(1, new ListNode(1)),
+  new ListNode(
+    5,
+    new ListNode(
+      6,
+      new ListNode(
+        7,
+        new ListNode(7, new ListNode(8, new ListNode(8, new ListNode(9)))),
+      ),
+    ),
+  ),
 ];
 
 function print(head) {
@@ -90,7 +124,11 @@ function print(head) {
 for (const testcase of testcases) {
   console.log("Input:");
   print(testcase);
-  const output = deleteDuplicates(testcase);
-  console.log("Output:");
-  print(output);
+  // const output = deleteDuplicates(testcase);
+  // console.log("Output:");
+  // print(output);
+
+  const output2 = deleteDuplicates2(testcase);
+  console.log("Output2:");
+  print(output2);
 }
