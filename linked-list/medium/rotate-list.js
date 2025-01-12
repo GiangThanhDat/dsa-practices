@@ -17,33 +17,38 @@ class ListNode {
 }
 
 function rotateRight(head, k) {
-  if (head == null) return head;
+  if (!head || k === 0) return head;
 
-  let dummy = new ListNode(0, head);
-
+  const dummy = new ListNode(0, head);
   let prev = dummy,
     curr = head;
 
-  while (k > 0) {
-    prev = dummy;
-    curr = dummy.next;
-
-    while (curr.next) {
-      prev = prev.next;
-      curr = curr.next;
-    }
-
-    curr.next = dummy.next;
-    dummy.next = curr;
-
-    if (prev !== dummy) {
-      prev.next = null;
-    } else {
-      prev.next.next = null;
-    }
-
-    k--;
+  let len = 0;
+  while (curr) {
+    curr = curr.next;
+    len++;
   }
+
+  curr = dummy;
+  let step = k % len;
+
+  while (step && curr.next) {
+    step--;
+    curr = curr.next;
+  }
+
+  while (curr.next) {
+    prev = prev.next;
+    curr = curr.next;
+  }
+
+  if (prev === curr) {
+    return curr;
+  }
+
+  dummy.next = prev.next;
+  prev.next = null;
+  curr.next = head;
 
   return dummy.next;
 }
@@ -69,6 +74,7 @@ const testcases = [
   [new ListNode(1, new ListNode(2)), 1],
   [null, 1],
   [new ListNode(1), 1],
+  [new ListNode(1), 0],
   [new ListNode(1, new ListNode(2, new ListNode(3))), 2000000000],
 ];
 
@@ -79,6 +85,6 @@ for (const testcase of testcases) {
   console.log("k:", k);
 
   const output = rotateRight(list, k);
-  console.log("Output:");
+  console.log("\n\n\nOutput:");
   print(output);
 }
