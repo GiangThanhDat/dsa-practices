@@ -17,40 +17,26 @@ class ListNode {
 }
 
 function rotateRight(head, k) {
-  if (!head || k === 0) return head;
+  if (!head || !head.next) return head;
 
-  const dummy = new ListNode(0, head);
-  let prev = dummy,
-    curr = head;
+  let tail = head;
+  let length = 1;
 
-  let len = 0;
-  while (curr) {
-    curr = curr.next;
-    len++;
+  while (tail.next) {
+    tail = tail.next;
+    length++;
   }
 
-  curr = dummy;
-  let step = k % len;
-
-  while (step && curr.next) {
-    step--;
+  let curr = head;
+  for (let i = 1; i < length - (k % length); i++) {
     curr = curr.next;
   }
 
-  while (curr.next) {
-    prev = prev.next;
-    curr = curr.next;
-  }
+  const newhead = curr.next;
+  tail.next = head;
+  curr.next = null;
 
-  if (prev === curr) {
-    return curr;
-  }
-
-  dummy.next = prev.next;
-  prev.next = null;
-  curr.next = head;
-
-  return dummy.next;
+  return newhead;
 }
 
 function print(head) {
