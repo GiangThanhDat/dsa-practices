@@ -28,15 +28,19 @@ function rotateRight(head, k) {
   }
 
   let curr = head;
-  for (let i = 1; i < length - (k % length); i++) {
+  k = k % length;
+
+  if (k === 0) return head;
+
+  for (let i = 1; i < length - k; i++) {
     curr = curr.next;
   }
 
-  const newhead = curr.next;
+  const newHead = curr.next;
   tail.next = head;
   curr.next = null;
 
-  return newhead;
+  return newHead;
 }
 
 function print(head) {
