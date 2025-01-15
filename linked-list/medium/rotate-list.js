@@ -1,3 +1,6 @@
+import ListNode from "../classes/list-node.js";
+import { convertLinkedListToArray, createLinkedList } from "../utils.js";
+
 console.log("Rotate-list");
 
 /*
@@ -8,13 +11,6 @@ console.log("Rotate-list");
  * input = [0,1,2],  k = 4
  * output = [2,0,1]
  * */
-
-class ListNode {
-  constructor(val, next) {
-    this.val = val === undefined ? null : val;
-    this.next = next === undefined ? null : next;
-  }
-}
 
 function rotateRight(head, k) {
   if (!head || !head.next) {
@@ -44,38 +40,21 @@ function rotateRight(head, k) {
   return newHead;
 }
 
-function print(head) {
-  let out = "";
-  while (head) {
-    out += head.val;
-    head = head.next;
-  }
-  console.log(out);
-}
-
 const testcases = [
-  [
-    new ListNode(
-      1,
-      new ListNode(2, new ListNode(3, new ListNode(4, new ListNode(5)))),
-    ),
-    2,
-  ],
-  [new ListNode(0, new ListNode(1, new ListNode(2))), 4],
-  [new ListNode(1, new ListNode(2)), 1],
+  [createLinkedList([1, 2, 3, 4, 5]), 2],
+  [createLinkedList([0, 1, 2]), 4],
+  [createLinkedList([1, 2]), 1],
   [null, 1],
   [new ListNode(1), 1],
   [new ListNode(1), 0],
-  [new ListNode(1, new ListNode(2, new ListNode(3))), 2000000000],
+  [createLinkedList([1, 2, 3]), 2000000000],
 ];
 
 for (const testcase of testcases) {
   const [list, k] = testcase;
-  console.log("Head:");
-  print(list);
+  console.log("Head:", convertLinkedListToArray(list));
   console.log("k:", k);
 
   const output = rotateRight(list, k);
-  console.log("\n\n\nOutput:");
-  print(output);
+  console.log("\n\n\nOutput:", convertLinkedListToArray(output));
 }

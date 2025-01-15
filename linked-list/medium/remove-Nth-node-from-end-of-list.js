@@ -1,3 +1,6 @@
+import ListNode from "../classes/list-node.js";
+import { convertLinkedListToArray, createLinkedList } from "../utils.js";
+
 console.log("Remove Nth Node From End of List");
 /**
  * Definition for singly-linked list.
@@ -10,13 +13,6 @@ console.log("Remove Nth Node From End of List");
  *     }
  * }
  */
-
-class ListNode {
-  constructor(val, next) {
-    this.val = val === undefined ? 0 : val;
-    this.next = next === undefined ? null : next;
-  }
-}
 
 function removeNthFromEnd(head, n) {
   const dummy = new ListNode(0, head);
@@ -75,27 +71,21 @@ function print(head) {
 }
 
 const testcases = [
-  [
-    new ListNode(
-      1,
-      new ListNode(2, new ListNode(3, new ListNode(4, new ListNode(5)))),
-    ),
-    2,
-  ],
+  [createLinkedList([1, 2, 3, 4, 5]), 2],
   [new ListNode(1), 1],
-  [new ListNode(1, new ListNode(2)), 1],
+  [createLinkedList([1, 2]), 1],
 ];
 
 for (const testcase of testcases) {
   console.log("\n\n ==== \n\n ");
   const [list, n] = testcase;
-  console.log("Input:");
-  print(list);
-  console.log("n:", n, "\n\n");
+  console.log("Input:", convertLinkedListToArray(list), "n:", n);
   // const output = removeNthFromEnd(...testcase);
-  // console.log("Output:");
+  // console.log("Output:", convertLinkedListToArray(output));
   // print(output);
   const outputTwoPointer = removeNthFromEndTwoPointer(list, n);
-  console.log("Output two pointer:");
-  print(outputTwoPointer);
+  console.log(
+    "Output two pointer:",
+    convertLinkedListToArray(outputTwoPointer),
+  );
 }

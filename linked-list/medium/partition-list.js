@@ -1,4 +1,4 @@
-import ListNode from "../classes/list-node.js";
+import { convertLinkedListToArray, createLinkedList } from "../utils.js";
 
 console.log("Partition List");
 
@@ -25,31 +25,6 @@ console.log("Partition List");
 
 function partition(head, x) {
   return head;
-}
-
-function createLinkedList(array) {
-  if (!array || array.length === 0) {
-    return null;
-  }
-
-  const result = new ListNode();
-  let curr = result;
-
-  for (const value of array) {
-    curr.next = new ListNode(value);
-    curr = curr.next;
-  }
-
-  return result.next;
-}
-
-function convertLinkedListToArray(head) {
-  const result = [];
-  while (head) {
-    result.push(head.val);
-    head = head.next;
-  }
-  return result;
 }
 
 const testcases = [

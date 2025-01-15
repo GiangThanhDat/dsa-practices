@@ -1,3 +1,6 @@
+import ListNode from "../classes/list-node.js";
+import { convertLinkedListToArray, createLinkedList } from "../utils.js";
+
 console.log("Reverse linked list II");
 
 /*
@@ -21,19 +24,6 @@ console.log("Reverse linked list II");
  *         this.next = (next===undefined ? null : next)
  *     }
  * }
- */
-class ListNode {
-  constructor(val, next) {
-    this.val = val === undefined ? 0 : val;
-    this.next = next === undefined ? null : next;
-  }
-}
-
-/**
- * @param {ListNode} head
- * @param {number} left
- * @param {number} right
- * @return {ListNode}
  */
 
 // My solution (using map)
@@ -125,53 +115,33 @@ function reverseBetweenUsingPointPrev(head, left, right) {
 
 // [list, l, r]
 const testcases = [
-  [
-    new ListNode(
-      1,
-      new ListNode(2, new ListNode(3, new ListNode(4, new ListNode(5)))),
-    ),
-    2,
-    4,
-  ],
-  [
-    new ListNode(
-      7,
-      new ListNode(
-        4,
-        new ListNode(
-          3,
-          new ListNode(2, new ListNode(8, new ListNode(9, new ListNode(6)))),
-        ),
-      ),
-    ),
-    2,
-    4,
-  ],
+  [createLinkedList([1, 2, 3, 4, 5]), 2, 4],
+  [createLinkedList([7, 4, 3, 2, 8, 9, 6]), 2, 4],
   [new ListNode(5), 1, 1],
 ];
 
-function print(head) {
-  let out = "";
-  while (head) {
-    out += head.val;
-    head = head.next;
-  }
-  console.log(out);
-}
-
 for (const testcase of testcases) {
   const [list, left, right] = testcase;
-  console.log("\n======\nInput:");
-  print(list);
+  console.log(
+    "\n======\nInput:",
+    convertLinkedListToArray(list),
+    "left:",
+    left,
+    "right: ",
+    right,
+  );
 
-  console.log("my solution with map: ");
   const output = reverseBetween(list, left, right);
-  print(output);
+  console.log("my solution with map: ", convertLinkedListToArray(output));
 
-  console.log("output stack solution: ");
   const outputStackSolution = reverseBetweenUsingQueue(list, left, right);
-  print(outputStackSolution);
-  console.log("output previous solution: ");
+  console.log(
+    "output stack solution: ",
+    convertLinkedListToArray(outputStackSolution),
+  );
   const outPreviousPointer = reverseBetweenUsingPointPrev(list, left, right);
-  print(outPreviousPointer);
+  console.log(
+    "output previous solution: ",
+    convertLinkedListToArray(outPreviousPointer),
+  );
 }

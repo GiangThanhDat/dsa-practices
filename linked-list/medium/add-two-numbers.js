@@ -1,3 +1,6 @@
+import ListNode from "../classes/list-node.js";
+import { createLinkedList, convertLinkedListToArray } from "../utils.js";
+
 console.log("Add two numbers");
 
 /**
@@ -30,18 +33,6 @@ console.log("Add two numbers");
  * }
  *
  */
-/**
- * @param {ListNode} l1
- * @param {ListNode} l2
- * @return {ListNode}
- */
-
-class ListNode {
-  constructor(val, next) {
-    this.val = val === undefined ? 0 : val;
-    this.next = next === undefined ? null : next;
-  }
-}
 
 const addTwoNumbers = function (l1, l2) {
   const result = new ListNode(0);
@@ -119,52 +110,31 @@ function addTwoNumbers2(l1, l2) {
   return result.next;
 }
 
-const print = function (list) {
-  let r = "";
-  while (list) {
-    r += list.val;
-    list = list.next;
-  }
-  console.log(r);
-};
-
 const testcases = [
-  [
-    new ListNode(2, new ListNode(4, new ListNode(3))),
-    new ListNode(5, new ListNode(6, new ListNode(4))),
-    [7, 0, 8],
-  ],
+  [createLinkedList([2, 4, 3]), createLinkedList([5, 6, 4]), [(7, 0, 8)]],
   [new ListNode(0), new ListNode(0), [0]],
   [
-    new ListNode(
-      9,
-      new ListNode(
-        9,
-        new ListNode(
-          9,
-          new ListNode(9, new ListNode(9, new ListNode(9, new ListNode(9)))),
-        ),
-      ),
-    ),
-    new ListNode(9, new ListNode(9, new ListNode(9, new ListNode(9)))),
+    createLinkedList([9, 9, 9, 9, 9, 9, 9]),
+    createLinkedList([9, 9, 9, 9]),
     [8, 9, 9, 9, 0, 0, 0, 1],
   ],
   [
-    new ListNode(2, new ListNode(4, new ListNode(9))),
-    new ListNode(5, new ListNode(6, new ListNode(4, new ListNode(9)))),
+    createLinkedList([2, 4, 9]),
+    createLinkedList([5, 6, 4, 9]),
     [7, 0, 4, 0, 1],
   ],
-  [new ListNode(0), new ListNode(7, new ListNode(3)), [7, 3]],
+  [new ListNode(0), createLinkedList([7, 3]), [7, 3]],
 ];
 
 for (let testcase of testcases) {
   console.log("\n\n\ninput :");
-  print(testcase[0]);
-  print(testcase[1]);
+  console.log(
+    convertLinkedListToArray(testcase[0]),
+    "+",
+    convertLinkedListToArray(testcase[1]),
+  );
   const output = addTwoNumbers(...testcase);
   const output2 = addTwoNumbers2(...testcase);
-  console.log("\noutput:");
-  print(output);
-  console.log("\noutput 2:");
-  print(output2);
+  console.log("\noutput:", convertLinkedListToArray(output));
+  console.log("\noutput 2:", convertLinkedListToArray(output2));
 }

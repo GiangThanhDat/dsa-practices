@@ -1,3 +1,6 @@
+import ListNode from "../classes/list-node.js";
+import { convertLinkedListToArray, createLinkedList } from "../utils.js";
+
 console.log("Remove duplicates from sorted list II");
 
 /**
@@ -13,13 +16,6 @@ console.log("Remove duplicates from sorted list II");
  * Input: head = [1,1,1,2,3]
  * Output: [2,3]
  */
-
-class ListNode {
-  constructor(val, next) {
-    this.val = val === undefined ? 0 : val;
-    this.next = next === undefined ? null : next;
-  }
-}
 
 // My first solution
 function deleteDuplicates(head) {
@@ -75,60 +71,20 @@ function deleteDuplicates2(head) {
 }
 
 const testcases = [
-  new ListNode(
-    1,
-    new ListNode(
-      2,
-      new ListNode(
-        3,
-        new ListNode(3, new ListNode(4, new ListNode(4, new ListNode(5)))),
-      ),
-    ),
-  ),
-  new ListNode(
-    1,
-    new ListNode(1, new ListNode(1, new ListNode(2, new ListNode(3)))),
-  ),
-  new ListNode(
-    1,
-    new ListNode(
-      1,
-      new ListNode(
-        2,
-        new ListNode(2, new ListNode(2, new ListNode(3, new ListNode(4)))),
-      ),
-    ),
-  ),
-  new ListNode(1, new ListNode(1)),
-  new ListNode(
-    5,
-    new ListNode(
-      6,
-      new ListNode(
-        7,
-        new ListNode(7, new ListNode(8, new ListNode(8, new ListNode(9)))),
-      ),
-    ),
-  ),
+  createLinkedList([1, 2, 3, 3, 4, 4, 5]),
+  createLinkedList([1, 1, 1, 2, 3]),
+  createLinkedList([1, 1, 2, 2, 2, 4]),
+  createLinkedList([1, 1]),
+  createLinkedList([5, 6, 7, 7, 8, 9]),
 ];
 
-function print(head) {
-  let out = "";
-  while (head) {
-    out += head.val;
-    head = head.next;
-  }
-  console.log(out);
-}
-
 for (const testcase of testcases) {
-  console.log("Input:");
-  print(testcase);
+  console.log("Input:", convertLinkedListToArray(testcase));
+
   // const output = deleteDuplicates(testcase);
   // console.log("Output:");
   // print(output);
 
   const output2 = deleteDuplicates2(testcase);
-  console.log("Output2:");
-  print(output2);
+  console.log("Output2:", convertLinkedListToArray(output2));
 }

@@ -19,13 +19,7 @@
  * Output: [[3,null],[3,0],[3,null]]
  */
 
-class _Node {
-  constructor(val, next, random) {
-    this.val = val === undefined ? 0 : val;
-    this.next = next === undefined ? null : next;
-    this.random = random === undefined ? null : random;
-  }
-}
+import _Node from "../classes/_node.js";
 
 // My solution
 function copyRandomList(head) {
@@ -111,15 +105,6 @@ function copyRandomList(head) {
     curr = curr.next;
   }
   return map.get(head);
-}
-
-function print(head) {
-  let result = "";
-  while (head) {
-    result += head.val;
-    head = head.next;
-  }
-  console.log(result);
 }
 
 // var node7 = new _Node(7, node13, null);
