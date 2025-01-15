@@ -29,6 +29,10 @@ function rotateRight(head, k) {
 
   k = k % length;
 
+  if (k === 0) {
+    return head;
+  }
+
   for (let i = 1; i < length - k; i++) {
     curr = curr.next;
   }
