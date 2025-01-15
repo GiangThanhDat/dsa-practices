@@ -17,7 +17,9 @@ class ListNode {
 }
 
 function rotateRight(head, k) {
-  if (!head || !head.next) return head;
+  if (!head || !head.next) {
+    return head;
+  }
 
   let tail = head;
   let length = 1;
@@ -28,9 +30,8 @@ function rotateRight(head, k) {
   }
 
   let curr = head;
-  k = k % length;
 
-  if (k === 0) return head;
+  k = k % length;
 
   for (let i = 1; i < length - k; i++) {
     curr = curr.next;
