@@ -1,3 +1,4 @@
+import ListNode from "../classes/list-node.js";
 import { convertLinkedListToArray, createLinkedList } from "../utils.js";
 
 console.log("Partition List");
@@ -23,43 +24,63 @@ console.log("Partition List");
 //   }
 // }
 
-// x = 3
-// Xac dinh thang cuoi cung < 3
-// va dau tien >= 3
-// loop lan nua xem thang nao < 3 thi dua ra truoc thang
-// dau tien >= 3
+// My solution
 function partition(head, x) {
-  let lastLast = null;
-  let firstGreaterOrEqal = null;
+  if (head === null) {
+    return null;
+  }
 
-  let prev = head;
-  let curr = head.next;
+  const dummy = new ListNode(0, head);
+  let left = dummy;
 
-  while (curr && lastLast === null && firstGreaterOrEqal === null) {
-    if (curr.val >= x) {
-      firstGreaterOrEqal = curr;
-      lastLast = prev;
+  while (left && left.next?.val < x) {
+    left = left.next;
+  }
+  let right = left.next;
+
+  while (right && right.next?.val >= x) {
+    right = right.next;
+  }
+
+  while (right && right.next !== null) {
+    if (right.next?.val < x) {
+      let p = left.next;
+      let next = right.next.next;
+      left.next = right.next;
+      right.next.next = p;
+      right.next = next;
+      left = left.next;
     } else {
-      prev = prev.next;
-      curr = curr.next;
+      right = right.next;
     }
   }
 
-  prev = firstGreaterOrEqal;
-  curr = firstGreaterOrEqal.next;
-  while (curr) {
-    if (curr.val < x) {
-      const next = curr.next;
-      lastLast.next = curr;
-      curr.next = firstGreaterOrEqal;
-      prev.next = next;
+  return dummy.next;
+}
+
+// 2 list seperator approach
+function partition2List(head, x) {
+  const lessList = new ListNode();
+  const greaterList = new ListNode();
+
+  let less = lessList,
+    greater = greaterList;
+
+  while (head !== null) {
+    if (head.val < x) {
+      less.next = head;
+      less = less.next;
+    } else {
+      greater.next = head;
+      greater = greater.next;
     }
-    console.log(prev.val, curr.val);
-    prev = prev.next;
-    curr = curr.next;
+    head = head.next;
   }
 
-  return head;
+  less.next = greaterList.next;
+  greater.next = null;
+
+  return lessList.next;
 }
 
 const testcases = [
@@ -67,7 +88,11 @@ const testcases = [
   [createLinkedList([2, 1]), 2],
   [createLinkedList([1, 7, 2, 1, 4, 5, 3, 2, 5, 2]), 3],
   [createLinkedList([1, 2, 1, 3, 7, 2, 1, 4, 5, 3, 2, 5, 2]), 4],
-  // 1, 2, 1, 2, 2, 7, 4, 5, 3, 5
+  [createLinkedList([1, 4, 3, 5, 2, 1, 2]), 3],
+  [createLinkedList([1, 4, 3, 5, 2, 5, 1, 2]), 3],
+  [createLinkedList([1]), 0],
+  [createLinkedList([]), 3],
+  [createLinkedList([1]), 2],
 ];
 
 for (const testcase of testcases) {
@@ -76,7 +101,10 @@ for (const testcase of testcases) {
   console.log("List:", convertLinkedListToArray(list));
   console.log("x: ", x);
   console.log("\n");
-  const output = partition(list, x);
-  const outputAsArray = convertLinkedListToArray(output);
-  console.log("Output:", outputAsArray);
+  // const output = partition(list, x);
+  const output2List = partition2List(list, x);
+  // const outputAsArray = convertLinkedListToArray(output);
+  const output2ListAsArray = convertLinkedListToArray(output2List);
+  // console.log("Output:", outputAsArray);
+  console.log("Output:", output2ListAsArray);
 }
