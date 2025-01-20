@@ -39,69 +39,57 @@ class DoubleListNode {
 
 class LRUCache {
   constructor(capacity) {
-    this.size = 0;
     this.capacity = capacity;
-    this.hash = {};
+    this.hash = new Map();
 
-    this.frequentUsed = new DoubleListNode(); // dummy head
-    this.mostUsedNode = new DoubleListNode(); // dummy tail
+    this.head = new DoubleListNode(); // dummy head
+    this.tail = new DoubleListNode(); // dummy tail
 
-    this.frequentUsed.next = this.mostUsedNode;
-    this.mostUsedNode.prev = this.frequentUsed;
+    this.head.next = this.tail;
+    this.tail.prev = this.head;
   }
 
-  // Move a node to the most recently used position
-  _moveToMostUsed(node) {
-    // Remove node from its current position
+  remove(node) {
     node.prev.next = node.next;
     node.next.prev = node.prev;
-
-    // Add node to the most recently used position (before the dummy tail)
-    this._addToMostUsed(node);
   }
 
-  _addToMostUsed(node) {
-    node.prev = this.mostUsedNode.prev;
-    node.next = this.mostUsedNode;
-    this.mostUsedNode.prev.next = node;
-    this.mostUsedNode.prev = node;
-  }
+  push(node) {
+    node.next = this.tail;
+    node.prev = this.tail.prev;
 
-  // Remove the least recently used node
-  _removeLeastUsed() {
-    const lruNode = this.frequentUsed.next;
-    this.frequentUsed.next = lruNode.next;
-    lruNode.next.prev = this.frequentUsed;
-
-    delete this.hash[lruNode.key];
-    this.size--;
+    this.tail.prev.next = node;
+    this.tail.prev = node;
   }
 
   get(key) {
-    if (this.hash[key]) {
-      const node = this.hash[key];
-      this._moveToMostUsed(node);
-      return node.val;
+    const node = this.hash.get(key);
+    if (!node) {
+      return -1;
     }
-    return -1;
+
+    this.remove(node);
+    this.push(node);
+
+    return node.val;
   }
 
-  put(key, value) {
-    if (this.hash[key]) {
-      // Update value and move to most recently used
-      const node = this.hash[key];
-      node.val = value;
-      this._moveToMostUsed(node);
-    } else {
-      // Ad  a new node
-      if (this.size >= this.capacity) {
-        this._removeLeastUsed(); // Evict least recently used
+  put(key, val) {
+    let node = this.hash.get(key);
+    if (!node) {
+      if (this.hash.size === this.capacity) {
+        const lru = this.head.next;
+        this.hash.delete(lru.key);
+        this.remove(lru);
       }
 
-      const newNode = new DoubleListNode(value, key);
-      this.hash[key] = newNode;
-      this._addToMostUsed(newNode);
-      this.size++;
+      node = new DoubleListNode(val, key);
+      this.hash.set(key, node);
+      this.push(node);
+    } else {
+      this.remove(node);
+      node.val = val;
+      this.push(node);
     }
   }
 }
@@ -225,9 +213,9 @@ for (const testcase of testcases) {
 
   actions.forEach((action, index) => {
     if (action === "LRUCache") {
-      lRUCache = new LRUCache2(...params[index]);
+      lRUCache = new LRUCache(...params[index]);
       result.push(null);
-    } else if (lRUCache instanceof LRUCache2) {
+    } else if (lRUCache instanceof LRUCache) {
       result.push(lRUCache[action](...params[index]));
     }
   });
