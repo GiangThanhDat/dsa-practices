@@ -10,10 +10,24 @@ import { traversalPreorder } from "../utils.js";
  * Output: [3,9,20, null, null, 15,17]
  * */
 
-let tree = new TreeNode();
-
 function buildTree(preorder, inorder) {
-  return null;
+  let i = -1;
+  function createTreeNode(inorder) {
+    if (i >= preorder.length) {
+      return null;
+    }
+    i++;
+    const val = preorder[i];
+    const index = inorder.indexOf(val);
+    const node = new TreeNode(
+      val,
+      createTreeNode(inorder.slice(0, index)),
+      createTreeNode(inorder.slice(index + 1)),
+    );
+    return node;
+  }
+
+  return createTreeNode(inorder);
 }
 
 const testcases = [
@@ -23,7 +37,7 @@ const testcases = [
   ],
   [
     [1, 2, 4, 5, 3, 6, 7],
-    [4, 2, 5, 1, 6, 7],
+    [4, 2, 5, 1, 6, 3, 7],
   ],
 ];
 
