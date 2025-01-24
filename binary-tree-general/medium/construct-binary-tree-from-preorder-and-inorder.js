@@ -11,22 +11,27 @@ import { traversalPreorder } from "../utils.js";
  * */
 
 function buildTree(preorder, inorder) {
-  let i = -1;
-  function createTreeNode(inorder) {
-    if (i >= preorder.length || inorder.length === 0) {
-      return null;
-    }
-    i++;
-    const val = preorder[i];
-    const index = inorder.indexOf(val);
+  const inorderMap = new Map();
+
+  for (let i = 0; i < inorder.length; i++) {
+    inorderMap.set(inorder[i], i);
+  }
+
+  let preorderIndex = 0;
+  function createTreeNode(left, right) {
+    if (left >= right) return null;
+
+    const val = preorder[preorderIndex++];
+    const index = inorderMap.get(val);
+
     return new TreeNode(
       val,
-      createTreeNode(inorder.slice(0, index)),
-      createTreeNode(inorder.slice(index + 1)),
+      createTreeNode(left, index - 1),
+      createTreeNode(index + 1, right),
     );
   }
 
-  return createTreeNode(inorder);
+  return createTreeNode(0, inorder.length - 1);
 }
 
 const testcases = [
