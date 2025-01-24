@@ -13,18 +13,17 @@ import { traversalPreorder } from "../utils.js";
 function buildTree(preorder, inorder) {
   let i = -1;
   function createTreeNode(inorder) {
-    if (i >= preorder.length) {
+    if (i >= preorder.length || inorder.length === 0) {
       return null;
     }
     i++;
     const val = preorder[i];
     const index = inorder.indexOf(val);
-    const node = new TreeNode(
+    return new TreeNode(
       val,
       createTreeNode(inorder.slice(0, index)),
       createTreeNode(inorder.slice(index + 1)),
     );
-    return node;
   }
 
   return createTreeNode(inorder);
