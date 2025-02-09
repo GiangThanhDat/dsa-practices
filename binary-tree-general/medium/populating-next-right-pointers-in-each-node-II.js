@@ -40,12 +40,39 @@ function connect(root) {
     f(node.left, level + 1);
     f(node.right, level + 1);
   }
+
   f(root);
 
   for (const [, nodes] of map.entries()) {
     for (let i = 0; i < nodes.length - 1; i++) {
       nodes[i].next = nodes[i + 1];
     }
+  }
+
+  return root;
+}
+
+// The second approache
+function connect2(root) {
+  if (root === null) return null;
+
+  let head = root;
+
+  while (head) {
+    let dummy = new _Node(0);
+    let temp = dummy;
+    while (head) {
+      if (head.left !== null) {
+        temp.next = head.left;
+        temp = temp.next;
+      }
+      if (head.right !== null) {
+        temp.next = head.right;
+        temp = temp.next;
+      }
+      head = head.next;
+    }
+    head = dummy.next;
   }
 
   return root;
@@ -65,4 +92,5 @@ function travelsalPreorderWithNextPointer(node) {
 
 for (const testcase of testcases) {
   travelsalPreorderWithNextPointer(connect(testcase));
+  travelsalPreorderWithNextPointer(connect2(testcase));
 }
