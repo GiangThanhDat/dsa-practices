@@ -50,6 +50,24 @@ function flattenWithStack(root) {
   }
 }
 
+// recursive
+function flattenWithRecursive(root) {
+  let prev = null;
+
+  function postorder(node) {
+    if (!node) return;
+
+    postorder(node.right);
+    postorder(node.left);
+
+    node.right = prev;
+    node.lefht = null;
+    prev = node;
+  }
+
+  postorder(root);
+}
+
 const testcases = [
   new TreeNode(
     1,
@@ -60,7 +78,8 @@ const testcases = [
 
 for (const testcase of testcases) {
   traversalPreorder(testcase);
-  flatten(testcase);
-  flattenWithStack(testcase);
+  // flatten(testcase);
+  // flattenWithStack(testcase);
+  flattenWithRecursive(testcase);
   traversalPreorder(testcase);
 }
