@@ -19,7 +19,70 @@
  */
 
 function numIslands(grid) {
-  //
+  const m = grid.length,
+    n = grid[0].length;
+
+  const visited = new Array(m).fill(new Array(n).fill(false));
+
+  function isValid(i, j) {
+    return (
+      !(i < 0 || j < 0 || i > m || i > n) &&
+      grid[i][j] === "1" &&
+      visited[(i, j)] === false
+    );
+  }
+
+  function bfs(i, j) {
+    const queue = [[i, j]];
+    let start = 0;
+    while (queue.length) {
+      const size = queue.length;
+      for (let left = start; left < size; left++) {
+        const [i, j] = queue[left];
+        if (!visited[(i, j)]) {
+          visited[(i, j)] = true;
+        }
+        if (isValid(i - 1, j - 1)) {
+          queue.push([i - 1, j - 1]);
+        }
+        if (isValid(i - 1, j)) {
+          queue.push([i - 1, j]);
+        }
+        if (isValid(i - 1, j + 1)) {
+          queue.push([i - 1, j + 1]);
+        }
+        if (isValid(i, j - 1)) {
+          queue.push([i, j - 1]);
+        }
+        if (isValid(i, j + 1)) {
+          queue.push([i, j + 1]);
+        }
+        if (isValid(i + 1, j - 1)) {
+          queue.push([i + 1, j - 1]);
+        }
+        if (isValid(i + 1, j)) {
+          queue.push([i + 1, j]);
+        }
+        if (isValid(i + 1, j + 1)) {
+          queue.push([i + 1, j + 1]);
+        }
+      }
+      start = end;
+    }
+  }
+
+  let count = 0;
+  for (let i = 0; i < m; i++) {
+    for (let j = 0; j < n; j++) {
+      if (grid[i][j] === "1" && visited[i][j] === false) {
+        bfs(i, j);
+        console.log(`visited at count ${count}: `, visited);
+        count++;
+      }
+    }
+  }
+
+  console.log("count:", count);
 }
 
 const testcases = [
