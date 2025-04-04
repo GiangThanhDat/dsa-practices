@@ -44,38 +44,32 @@ function numIslands(grid) {
 
   function bfs(row, col) {
     const queue = [[row, col]];
+
     visited[row][col] = true;
-    let start = 0;
-    while (start < queue.length) {
-      const end = queue.length;
-      for (let left = start; left < end; left++) {
-        const [i, j] = queue[left];
-        // if (isValid(i - 1, j)) {
-        //   queue.push([i - 1, j]);
-        //   visited[i - 1][j] = true;
-        // }
-        // if (isValid(i, j - 1)) {
-        //   queue.push([i, j - 1]);
-        //   visited[i][j - 1] = true;
-        // }
-        // if (isValid(i, j + 1)) {
-        //   queue.push([i, j + 1]);
-        //   visited[i][j + 1] = true;
-        // }
-        // if (isValid(i + 1, j)) {
-        //   queue.push([i + 1, j]);
-        //   visited[i + 1][j] = true;
-        // }
-        for (const [di, dj] of directions) {
-          const [ni, nj] = [i + di, j + dj];
-          if (isValid(ni, nj)) {
-            visited[ni][nj] = true;
-            queue.push([ni, nj]);
-          }
+    let pointer = 0;
+
+    while (pointer < queue.length) {
+      const [i, j] = queue[pointer++];
+
+      for (const [di, dj] of directions) {
+        const [ni, nj] = [i + di, j + dj];
+        if (isValid(ni, nj)) {
+          visited[ni][nj] = true;
+          queue.push([ni, nj]);
         }
       }
-      start = end;
     }
+
+    // while (queue.length) {
+    //   const [i, j] = queue.shift();
+    //   for (const [di, dj] of directions) {
+    //     const [ni, nj] = [i + di, j + dj];
+    //     if (isValid(ni, nj)) {
+    //       visited[i][j] = true;
+    //       queue.push([ni, nj]);
+    //     }
+    //   }
+    // }
   }
 
   let count = 0;
@@ -103,6 +97,12 @@ const testcases = [
     ["1", "1", "0", "0", "0"],
     ["0", "0", "1", "0", "0"],
     ["0", "0", "0", "1", "1"],
+  ],
+  [
+    ["0", "1", "0", "0", "0"],
+    ["1", "0", "1", "0", "0"],
+    ["0", "1", "0", "0", "0"],
+    ["0", "0", "0", "0", "0"],
   ],
 ];
 
