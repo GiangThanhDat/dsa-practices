@@ -39,40 +39,38 @@ function solve(board) {
 
   function bfs(row, col) {
     const queue = [[row, col]];
-    const marks = [[row, col]];
-    board[row][col] = "X";
+    board[row][col] = "T";
 
-    let noSurrounded = false;
     while (queue.length) {
       const [i, j] = queue.shift();
-
-      if (i === 0 || j === 0 || i === m - 1 || j === n - 1) {
-        noSurrounded = true;
-        break;
-      }
-
       for (const [di, dj] of directions) {
         const [ni, nj] = [di + i, dj + j];
         if (0 <= ni && ni < m && 0 <= nj && nj < n && board[ni][nj] === "O") {
-          board[ni][nj] = "X";
+          board[ni][nj] = "T";
           queue.push([ni, nj]);
-          marks.push([ni, nj]);
         }
       }
     }
+  }
 
-    if (!noSurrounded) return;
-
-    for (const [i, j] of marks) {
-      board[i][j] = "O";
-    }
+  for (let i = 0; i < n; i++) {
+    if (board[0][i] === "O") bfs(0, i);
+  }
+  for (let i = 0; i < m; i++) {
+    if (board[i][n - 1] === "O") bfs(i, n - 1);
+  }
+  for (let i = n - 1; i >= 0; i--) {
+    if (board[m - 1][i] === "O") bfs(m - 1, i);
+  }
+  for (let i = m - 1; i >= 0; i--) {
+    if (board[i][0] === "O") bfs(i, 0);
   }
 
   for (let i = 0; i < m; i++) {
     for (let j = 0; j < n; j++) {
-      if (board[i][j] === "O") {
-        bfs(i, j);
-      }
+      const value = board[i][j];
+      if (value === "O") board[i][j] = "X";
+      if (value === "T") board[i][j] = "O";
     }
   }
 }
@@ -89,8 +87,6 @@ const testcases = [
     ["X", "O", "O", "X", "X"],
     ["X", "O", "O", "X", "X"],
     ["X", "X", "X", "X", "X"],
-  ],
-  [
     ["X", "X", "X", "X", "X"],
     ["X", "O", "O", "X", "X"],
     ["X", "O", "O", "O", "X"],
