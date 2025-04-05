@@ -29,6 +29,7 @@ const directions = [
   [0, -1],
   [0, 1],
 ];
+
 /**
  * Do not return anything, modify board in-place instead.
  */
@@ -39,38 +40,38 @@ function solve(board) {
 
   function bfs(row, col) {
     const queue = [[row, col]];
-    board[row][col] = "T";
+    const marks = [[row, col]];
+    board[row][col] = "X";
+    let noSurrounded = false;
 
     while (queue.length) {
       const [i, j] = queue.shift();
+      if (i === 0 || j === 0 || i === m - 1 || j === n - 1) {
+        noSurrounded = true;
+        break;
+      }
+
       for (const [di, dj] of directions) {
-        const [ni, nj] = [di + i, dj + j];
+        const locate = [di + i, dj + j];
+        const [ni, nj] = locate;
         if (0 <= ni && ni < m && 0 <= nj && nj < n && board[ni][nj] === "O") {
-          board[ni][nj] = "T";
-          queue.push([ni, nj]);
+          board[ni][nj] = "X";
+          queue.push(locate);
+          marks.push(locate);
         }
       }
     }
-  }
 
-  for (let i = 0; i < n; i++) {
-    if (board[0][i] === "O") bfs(0, i);
-  }
-  for (let i = 0; i < m; i++) {
-    if (board[i][n - 1] === "O") bfs(i, n - 1);
-  }
-  for (let i = n - 1; i >= 0; i--) {
-    if (board[m - 1][i] === "O") bfs(m - 1, i);
-  }
-  for (let i = m - 1; i >= 0; i--) {
-    if (board[i][0] === "O") bfs(i, 0);
+    if (!noSurrounded) return;
+
+    for (const [i, j] of marks) {
+      board[i][j] = "O";
+    }
   }
 
   for (let i = 0; i < m; i++) {
     for (let j = 0; j < n; j++) {
-      const value = board[i][j];
-      if (value === "O") board[i][j] = "X";
-      if (value === "T") board[i][j] = "O";
+      if (board[i][j] === "O") bfs(i, j);
     }
   }
 }
