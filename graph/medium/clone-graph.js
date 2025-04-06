@@ -10,7 +10,7 @@
  *    public int val;
  *    public List<Node> neighbors;
  *  }
- * ```
+ * ``ear
  * Test case format:
  *
  * For simplicity, each node's value is the same as the node's index (1-indexed). For excample, the first node with val == 1,
@@ -94,7 +94,7 @@ function printGraph(node) {
 
   const visited = new Map();
   const queue = [node];
-  const result = [];
+  let result = [];
 
   while (queue.length) {
     const node = queue.shift();
@@ -103,7 +103,7 @@ function printGraph(node) {
       visited.set(node.val, node);
 
       for (const neighbor of node.neighbors) {
-        if (!visited.has(neighbor)) {
+        if (!visited.has(neighbor.val)) {
           queue.push(neighbor);
           neighbors.push(neighbor.val);
         }
@@ -115,7 +115,7 @@ function printGraph(node) {
 
   const n = visited.size;
   for (let i = 0; i < n; i++) {
-    if (!result[i]) result = [];
+    if (!result[i]) result[i] = [];
   }
 
   return result;
