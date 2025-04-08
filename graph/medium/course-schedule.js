@@ -20,45 +20,37 @@
  *  To take corse 1 you should have finished course 0, and to take course 0 you should also have finished course 1. So it is impossible.
  */
 
-function buildGraph(connects) {
-  const graph = new Map();
-
-  for (const connect of connects) {
-    for (const node of connect) {
-      graph.set(node, [
-        ...(graph.get(node) || []),
-        ...connect.filter((i) => i !== node),
-      ]);
-    }
-  }
-  return graph;
-}
-
 function canFinish(numCourses, prerequisites) {
-  if (numCourses === 0 || !prerequisites) return;
-  const graph = buildGraph(prerequisites);
-  // console.log("graph:", graph);
-  // implement bfs
-  const queue = [graph.get(prerequisites[0][0])];
-  const visited = new Map();
+  const graph = new Map();
+  const inDegree = new Array(numCourses).fill(0);
 
-  let count = 0;
+  // Build graph and count in-dgrees
+  for (const [a, b] of prerequisites) {
+    if (!graph.has(b)) graph.set(b, []);
+    graph.get(b).push(a);
+    inDegree[a]++;
+  }
+
+  // Add courses with 0 in-degree to queue
+  const queue = [];
+  for (let i = 0; i < numCourses; i++) {
+    if (inDegree[i] === 0) queue.push(i);
+  }
+
+  let visitedCount = 0;
+
   while (queue.length) {
-    const node = queue.shift();
-    count++;
-    if (!visited.has(node)) {
-      visited.set(node, true);
-      for (const edge of node) {
-        const edgeNode = graph.get(edge);
-        if (!visited.has(edgeNode)) {
-          queue.push(edgeNode);
-        }
-      }
+    const course = queue.shift();
+    visitedCount++;
+
+    const neighbors = graph.get(course) || [];
+    for (const next of neighbors) {
+      inDegree[next]--;
+      if (inDegree[next] === 0) queue.push(next);
     }
   }
 
-  console.log("count:", count, numCourses);
-  return count <= numCourses;
+  return visitedCount === numCourses;
 }
 
 const testcases = [
@@ -111,6 +103,19 @@ const testcases = [
       [13, 1],
       [15, 1],
       [17, 4],
+    ],
+  ],
+  [
+    7,
+    [
+      [1, 0],
+      [0, 3],
+      [0, 2],
+      [3, 2],
+      [2, 5],
+      [4, 5],
+      [5, 6],
+      [2, 4],
     ],
   ],
 ];
